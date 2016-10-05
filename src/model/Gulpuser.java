@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -29,6 +30,14 @@ public class Gulpuser implements Serializable {
 	private String username;
 
 	private String zipcode;
+
+	//bi-directional many-to-one association to Gulprestaurantrating
+	@OneToMany(mappedBy="gulpuser")
+	private List<Gulprestaurantrating> gulprestaurantratings;
+
+	//bi-directional many-to-one association to Gulprestaurantreview
+	@OneToMany(mappedBy="gulpuser")
+	private List<Gulprestaurantreview> gulprestaurantreviews;
 
 	public Gulpuser() {
 	}
@@ -87,6 +96,50 @@ public class Gulpuser implements Serializable {
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+
+	public List<Gulprestaurantrating> getGulprestaurantratings() {
+		return this.gulprestaurantratings;
+	}
+
+	public void setGulprestaurantratings(List<Gulprestaurantrating> gulprestaurantratings) {
+		this.gulprestaurantratings = gulprestaurantratings;
+	}
+
+	public Gulprestaurantrating addGulprestaurantrating(Gulprestaurantrating gulprestaurantrating) {
+		getGulprestaurantratings().add(gulprestaurantrating);
+		gulprestaurantrating.setGulpuser(this);
+
+		return gulprestaurantrating;
+	}
+
+	public Gulprestaurantrating removeGulprestaurantrating(Gulprestaurantrating gulprestaurantrating) {
+		getGulprestaurantratings().remove(gulprestaurantrating);
+		gulprestaurantrating.setGulpuser(null);
+
+		return gulprestaurantrating;
+	}
+
+	public List<Gulprestaurantreview> getGulprestaurantreviews() {
+		return this.gulprestaurantreviews;
+	}
+
+	public void setGulprestaurantreviews(List<Gulprestaurantreview> gulprestaurantreviews) {
+		this.gulprestaurantreviews = gulprestaurantreviews;
+	}
+
+	public Gulprestaurantreview addGulprestaurantreview(Gulprestaurantreview gulprestaurantreview) {
+		getGulprestaurantreviews().add(gulprestaurantreview);
+		gulprestaurantreview.setGulpuser(this);
+
+		return gulprestaurantreview;
+	}
+
+	public Gulprestaurantreview removeGulprestaurantreview(Gulprestaurantreview gulprestaurantreview) {
+		getGulprestaurantreviews().remove(gulprestaurantreview);
+		gulprestaurantreview.setGulpuser(null);
+
+		return gulprestaurantreview;
 	}
 
 }

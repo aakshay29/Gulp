@@ -1,6 +1,7 @@
 package customTools;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
@@ -49,4 +50,36 @@ public class DBGulpUser {
 
 	}
 
-}
+	
+		
+		
+		
+
+		
+		public static void insert(Gulpuser user) {
+		    
+			 EntityManager em = DBUtil.getEmFactory().createEntityManager();
+			 EntityTransaction trans = em.getTransaction();
+			 //System.out.println("DbBullhorn: begin transaction");
+			 try {
+			 trans.begin();
+			 em.persist(user);
+			 //System.out.println("DbBullhorn: commit transaction");
+			 trans.commit();
+			 } catch (Exception e) {
+			 e.printStackTrace();
+			 //System.out.println("DbBullhorn: rollback transaction");
+			 trans.rollback();
+			 } finally {
+			 //System.out.println("DbBullhorn: close em");
+			 em.close();
+			 }
+	}
+	}
+
+	
+	
+	
+	
+	
+

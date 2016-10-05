@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import customTools.DBGulpRestaurant;
 import customTools.DBGulpUser;
+import model.Gulprestaurant;
 import model.Gulpuser;
 
 /**
@@ -41,13 +43,12 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().setAttribute("alert", "");
-		request.getSession().setAttribute("average", "");
-		request.getSession().setAttribute("HighAndLow", "");
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String nextUrl;
-		List<Gulpuser> records = null;
+		
+		List<Gulprestaurant> restaurantList = null;
 		
 		if(DBGulpUser.isValidUser(username, password)){
 			Gulpuser user = null;		
@@ -60,23 +61,19 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("userRole", userRole);		
 			
 			if(userRole == 1){
-//				records = DBGrade.gbPost();
-//				session.setAttribute("records", records);
-//				nextUrl = "/DisplayGrades.jsp";	
+				nextUrl = "/AddRestaurants.jsp";	
 			}
 			else{
-//				records = DBGrade.gbPostStudent(userID);
-//				session.setAttribute("records", records);
-//				nextUrl = "/YourGrades.jsp";	
+				restaurantList = DBGulpRestaurant.getRestaurantList();		
+				session.setAttribute("restaurantList", restaurantList);
+				nextUrl = "/RestaurantList.jsp";	
 			}
-			
-			
 		}
 		else{	
 			request.getSession().setAttribute("alert", "Incorrect username or password");
 			nextUrl = "/Login.jsp";
 		}
-		//response.sendRedirect(request.getContextPath()+nextUrl);
+		response.sendRedirect(request.getContextPath()+nextUrl);
 	}
 
 }

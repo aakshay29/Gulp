@@ -18,11 +18,17 @@ public class Gulprestaurantrating implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
-	private BigDecimal gulprestaurantid;
-
-	private BigDecimal gulpuserid;
-
 	private BigDecimal rating;
+
+	//bi-directional many-to-one association to Gulprestaurant
+	@ManyToOne
+	@JoinColumn(name="GULPRESTAURANTID")
+	private Gulprestaurant gulprestaurant;
+
+	//bi-directional many-to-one association to Gulpuser
+	@ManyToOne
+	@JoinColumn(name="GULPUSERID")
+	private Gulpuser gulpuser;
 
 	public Gulprestaurantrating() {
 	}
@@ -35,28 +41,28 @@ public class Gulprestaurantrating implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getGulprestaurantid() {
-		return this.gulprestaurantid;
-	}
-
-	public void setGulprestaurantid(BigDecimal gulprestaurantid) {
-		this.gulprestaurantid = gulprestaurantid;
-	}
-
-	public BigDecimal getGulpuserid() {
-		return this.gulpuserid;
-	}
-
-	public void setGulpuserid(BigDecimal gulpuserid) {
-		this.gulpuserid = gulpuserid;
-	}
-
 	public BigDecimal getRating() {
 		return this.rating;
 	}
 
 	public void setRating(BigDecimal rating) {
 		this.rating = rating;
+	}
+
+	public Gulprestaurant getGulprestaurant() {
+		return this.gulprestaurant;
+	}
+
+	public void setGulprestaurant(Gulprestaurant gulprestaurant) {
+		this.gulprestaurant = gulprestaurant;
+	}
+
+	public Gulpuser getGulpuser() {
+		return this.gulpuser;
+	}
+
+	public void setGulpuser(Gulpuser gulpuser) {
+		this.gulpuser = gulpuser;
 	}
 
 }
