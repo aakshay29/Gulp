@@ -1,7 +1,6 @@
 
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,20 +47,17 @@ public class EnterRating extends HttpServlet {
 		int rating = Integer.parseInt(request.getParameter("rating"));
 		Gulpuser user = (Gulpuser) session.getAttribute("user");
 		
-		List<Gulprestaurant> restaurant = null;
+		Gulprestaurant restaurant = null;
 		restaurant = DBGulpRestaurant.getRestaurantByID(restaurantID);
 		
 		Gulprestaurantrating rating2 = new Gulprestaurantrating();
 		rating2.setRating(rating);
 		rating2.setGulpuser(user);
-		rating2.setGulprestaurant(restaurant.get(0));
+		rating2.setGulprestaurant(restaurant);
 		
 		
 		if(DBGulpRestaurant.isValidRestaurant(restaurantID) == true){
 			DBGulpRestaurantRating.insertAndUpdate(rating2,restaurantID);
-			//DBGulpRestaurantRating.insertAndUpdate(rating, restaurantID);
-			//average = DBGrade.gbPostStudentAverage(studentID);
-			//request.getSession().setAttribute("average", "Student("+studentID+") average: " + average);
 			response.sendRedirect(request.getContextPath()+"/RestaurantList.jsp");
 		}
 		else{

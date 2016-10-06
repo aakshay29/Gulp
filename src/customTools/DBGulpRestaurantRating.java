@@ -1,5 +1,6 @@
 package customTools;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -25,21 +26,19 @@ public class DBGulpRestaurantRating {
 			em.close();
 		}
 		List<Gulprestaurantrating> restaurantList = getRatings(restaurantID);
-		int average = 0;
+		long average = 0;
 		for(int i = 0; i < restaurantList.size(); i++){
-			average += restaurantList.get(i).getRating();
-			System.out.println("$$$$$$$$$: " + average);
+			average += restaurantList.get(i).getRating();		
 		}
-		average = average/restaurantList.size();
-		List<Gulprestaurant> restaurant = DBGulpRestaurant.getRestaurantByID(restaurantID);
-		Gulprestaurant resto = restaurant.get(0);
-		resto.setAveragerating(average);
-		DBGulpRestaurant.update(resto);
+		BigDecimal num = new BigDecimal(average/restaurantList.size());
+		Gulprestaurant restaurant = DBGulpRestaurant.getRestaurantByID(restaurantID);
+		restaurant.setAveragerating(num.longValue());
+		DBGulpRestaurant.update(restaurant);
 	}
 	
 	public static List<Gulprestaurantrating> getRatings(int restaurantID) {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();	
-		TypedQuery<Gulprestaurantrating> query = em.createQuery("SELECT g.rating FROM Gulprestaurantrating g where g.id = :restaurantID", Gulprestaurantrating.class);
+		TypedQuery<Gulprestaurantrating> query = em.createQuery("SELECT g FROM Gulprestaurantrating g where g.gulprestaurant.id = :restaurantID", Gulprestaurantrating.class);
 		query.setParameter("restaurantID", restaurantID);
 		List<Gulprestaurantrating> restaurantList = null;
 		try {

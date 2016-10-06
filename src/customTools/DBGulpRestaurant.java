@@ -24,19 +24,19 @@ public class DBGulpRestaurant {
 		}
 		return restaurantList;
 	}
-	public static List<Gulprestaurant> getRestaurantByID(int restaurantID) {
+	public static Gulprestaurant getRestaurantByID(int restaurantID) {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();	
 		TypedQuery<Gulprestaurant> query = em.createQuery("SELECT g FROM Gulprestaurant g where g.id = :restaurantID", Gulprestaurant.class);
 		query.setParameter("restaurantID", restaurantID);
-		List<Gulprestaurant> restaurantList = null;
+		Gulprestaurant resto = null;
 		try {
-			restaurantList = query.getResultList();		
+			resto = query.getSingleResult();		
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			em.close();
 		}
-		return restaurantList;
+		return resto;
 	}
 	public static long getRestaurantAverageRating(int restaurantID) {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();	
