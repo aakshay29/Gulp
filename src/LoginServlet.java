@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("userRole", userRole);		
 			
 			if(userRole == 1){
-				nextUrl = "/AddRestaurants.jsp";	
+				nextUrl = "/AddRestaurant.jsp";	
 			}
 			else{
 				restaurantList = DBGulpRestaurant.getRestaurantList();		

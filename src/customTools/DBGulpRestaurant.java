@@ -7,6 +7,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
 import UserData.DBUtil;
+
 import model.Gulprestaurant;
 
 public class DBGulpRestaurant {
@@ -48,7 +49,7 @@ public class DBGulpRestaurant {
 			averageRating = 0;
 			int numberOfRatings = restaurantList.get(0).getGulprestaurantratings().size();
 			for(int j = 0; j < numberOfRatings; j++){
-				averageRating += Integer.parseInt(restaurantList.get(0).getGulprestaurantratings().get(j).getRating().toString());
+				//averageRating += Integer.parseInt(restaurantList.get(0).getGulprestaurantratings().get(j).getRating().toString());
 			}
 			averageRating = averageRating/numberOfRatings;
 		} catch (Exception e) {
@@ -87,4 +88,40 @@ public class DBGulpRestaurant {
 			em.close();
 		}
 	}
+	public static boolean isValidRestaurant(int restaurantID) {
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String qString = "SELECT count(g) FROM Gulprestaurant g "
+				+ "where g.id = :restaurantID";
+		TypedQuery<Long> q = em.createQuery(qString, Long.class);
+		boolean result = false;
+		q.setParameter("restaurantID", restaurantID);
+
+		try {
+			long userId = q.getSingleResult();
+			if (userId > 0) {
+				result = true;
+			}
+		} catch (Exception e) {
+
+			result = false;
+		} finally {
+			em.close();
+		}
+		return result;
+
+	}
+	public static void insert(Gulprestaurant restaurant) {
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		try {
+			trans.begin();
+			em.persist(restaurant);
+			trans.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			trans.rollback();
+		} finally {
+			em.close();
+		}
+}
 }

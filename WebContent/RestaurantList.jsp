@@ -37,5 +37,11 @@
 			</tbody>
 		</table>
 	</div>
+	<form action="EnterRating" method="post">
+		Enter restaurant ID: <br /><input type="text" name="restaurantID"><br/>
+		Enter rating (1-5): <br /><input type="text" name="rating"><br/>
+		<input type="submit" value="submit" id="submit"><br />
+	</form>
+	<input type="text" value="${alert}" size="28" readonly><hr>
 </body>
 </html>

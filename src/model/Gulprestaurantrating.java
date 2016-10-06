@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 
 /**
@@ -18,7 +17,7 @@ public class Gulprestaurantrating implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 
-	private BigDecimal rating;
+	private long rating;
 
 	//bi-directional many-to-one association to Gulprestaurant
 	@ManyToOne
@@ -41,12 +40,12 @@ public class Gulprestaurantrating implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getRating() {
+	public long getRating() {
 		return this.rating;
 	}
 
-	public void setRating(BigDecimal rating) {
-		this.rating = rating;
+	public void setRating(long rating2) {
+		this.rating = rating2;
 	}
 
 	public Gulprestaurant getGulprestaurant() {

@@ -17,6 +17,11 @@
 			<br /> <input type="submit" value="submit" id="submit">
 			<br/><br/><input type="text" value="${alert}" size="24" readonly>
 		</form>
+		<form action="NewUser.jsp" method="post">
+		<br /> <input type="submit" value="Signup" id="Signup">
+		<br /> <input type="hidden" name="action" value="Signup">
+		
+		</form>
 	</center>
 </body>
 </html>

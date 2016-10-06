@@ -1,7 +1,5 @@
 package customTools;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,7 +11,7 @@ import model.Gulprestaurant;
 import model.Gulprestaurantrating;
 
 public class DBGulpRestaurantRating {
-	public static void insertAndUpdate(Gulprestaurantrating rating) {
+	public static void insertAndUpdate(Gulprestaurantrating rating, int restaurantID) {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
 		try {
@@ -26,13 +24,14 @@ public class DBGulpRestaurantRating {
 		} finally {
 			em.close();
 		}
-		List<Gulprestaurantrating> restaurantList = getRatings(Integer.parseInt(rating.getGulprestaurant().toString()));
+		List<Gulprestaurantrating> restaurantList = getRatings(restaurantID);
 		int average = 0;
 		for(int i = 0; i < restaurantList.size(); i++){
-			average += Integer.parseInt(restaurantList.get(i).getRating().toString());
+			average += restaurantList.get(i).getRating();
+			System.out.println("$$$$$$$$$: " + average);
 		}
 		average = average/restaurantList.size();
-		List<Gulprestaurant> restaurant = DBGulpRestaurant.getRestaurantByID(Integer.parseInt(rating.getGulprestaurant().toString()));
+		List<Gulprestaurant> restaurant = DBGulpRestaurant.getRestaurantByID(restaurantID);
 		Gulprestaurant resto = restaurant.get(0);
 		resto.setAveragerating(average);
 		DBGulpRestaurant.update(resto);
