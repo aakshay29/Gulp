@@ -7,12 +7,12 @@ import javax.persistence.TypedQuery;
 
 import UserData.DBUtil;
 import model.Gulpuser;
+import util.MD5Util;
 
 public class DBGulpUser {
 	public static boolean isValidUser(String username, String password) {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		String qString = "Select count(g) from Gulpuser g "
-				+ "where g.username = :username and g.password = :userpass";
+		String qString = "Select count(g) from Gulpuser g " + "where g.username = :username and g.password = :userpass";
 		TypedQuery<Long> q = em.createQuery(qString, Long.class);
 		boolean result = false;
 		q.setParameter("username", username);
@@ -32,7 +32,11 @@ public class DBGulpUser {
 		return result;
 
 	}
-	
+	public static String getGravatarURL(String email, Integer size){
+		 String url = "http://www.gravatar.com/avatar/" +
+		 MD5Util.md5Hex(email) + "?s=" + size.toString();
+		 return url;
+	}
 	public static Gulpuser getUserByUsername(String username) {
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String qString = "Select u from Gulpuser u " + "where u.username = :username";
@@ -50,36 +54,38 @@ public class DBGulpUser {
 
 	}
 
-	
-		
-		
-		
-
-		
-		public static void insert(Gulpuser user) {
-		    
-			 EntityManager em = DBUtil.getEmFactory().createEntityManager();
-			 EntityTransaction trans = em.getTransaction();
-			 //System.out.println("DbBullhorn: begin transaction");
-			 try {
-			 trans.begin();
-			 em.persist(user);
-			 //System.out.println("DbBullhorn: commit transaction");
-			 trans.commit();
-			 } catch (Exception e) {
-			 e.printStackTrace();
-			 //System.out.println("DbBullhorn: rollback transaction");
-			 trans.rollback();
-			 } finally {
-			 //System.out.println("DbBullhorn: close em");
-			 em.close();
-			 }
-	}
+	public static void update(Gulpuser user) {
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		try {
+			trans.begin();
+			em.merge(user);
+			trans.commit();
+		} catch (Exception e) {
+			System.out.println(e);
+			trans.rollback();
+		} finally {
+			em.close();
+		}
 	}
 
-	
-	
-	
-	
-	
+	public static void insert(Gulpuser user) {
 
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		// System.out.println("DbBullhorn: begin transaction");
+		try {
+			trans.begin();
+			em.persist(user);
+			// System.out.println("DbBullhorn: commit transaction");
+			trans.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// System.out.println("DbBullhorn: rollback transaction");
+			trans.rollback();
+		} finally {
+			// System.out.println("DbBullhorn: close em");
+			em.close();
+		}
+	}
+}

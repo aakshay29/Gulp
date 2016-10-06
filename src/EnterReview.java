@@ -1,6 +1,8 @@
 
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import customTools.DBGulpRestaurant;
+import customTools.DBGulpRestaurantRating;
 import customTools.DBGulpRestaurantReview;
 import model.Gulprestaurant;
+import model.Gulprestaurantrating;
 import model.Gulprestaurantreview;
 import model.Gulpuser;
 
@@ -45,9 +49,10 @@ public class EnterReview extends HttpServlet {
 		int restaurantID = Integer.parseInt(request.getParameter("restaurantID"));
 		String rating = request.getParameter("review");
 		Gulpuser user = (Gulpuser) session.getAttribute("user");
-		
+		List<Gulprestaurant> restaurantList = null;
 		Gulprestaurant restaurant = null;
 		restaurant = DBGulpRestaurant.getRestaurantByID(restaurantID);
+		int userID = (int) session.getAttribute("userID");
 		
 		Gulprestaurantreview review2 = new Gulprestaurantreview();
 		review2.setReview(rating);
@@ -56,7 +61,17 @@ public class EnterReview extends HttpServlet {
 		
 		
 		if(DBGulpRestaurant.isValidRestaurant(restaurantID) == true){
+			
+			List<Gulprestaurantrating> ratingList = null;
+			ratingList = DBGulpRestaurantRating.getRatingsForUser(userID);
+			session.setAttribute("ratingList", ratingList);	
+			List<Gulprestaurantreview> reviewList = null;
+			reviewList = DBGulpRestaurantReview.getReviewsForUser(userID);
+			session.setAttribute("reviewList", reviewList);	
+			
 			DBGulpRestaurantReview.insert(review2);
+			restaurantList = DBGulpRestaurant.getRestaurantList();		
+			session.setAttribute("restaurantList", restaurantList);
 			response.sendRedirect(request.getContextPath()+"/RestaurantList.jsp");
 		}
 		else{

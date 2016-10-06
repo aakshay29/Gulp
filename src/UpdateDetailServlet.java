@@ -8,22 +8,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import customTools.DBGulpRestaurant;
-import customTools.DBGulpUser;
 import model.Gulprestaurant;
-import model.Gulpuser;
 
 /**
- * Servlet implementation class NewuserServlet
+ * Servlet implementation class UpdateDetailServlet
  */
-@SuppressWarnings("unused")
-@WebServlet("/NewuserServlet")
-public class NewuserServlet extends HttpServlet {
+@WebServlet("/UpdateDetailServlet")
+public class UpdateDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NewuserServlet() {
+    public UpdateDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,28 +38,17 @@ public class NewuserServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String nextUrl="";
-		String newname=request.getParameter("username");
-		String newemail=request.getParameter("email");
-		String newzip=request.getParameter("zipcode");
-		String role ="2";
-		String password = request.getParameter("password");
 		
+		String name= request.getParameter("name");
+		String address= request.getParameter("address");
 		
-		Gulpuser user = new Gulpuser();
-		user.setName(newname);
-		user.setUsername(newname);
-		user.setEmail(newemail);
-		user.setRole(Long.parseLong(role));
-		user.setPassword(password);
-		user.setZipcode(newzip);
-		
-		DBGulpUser.insert(user);
-		
-		System.out.println("insert done");
-		nextUrl="/Login.jsp";
-		
-		response.sendRedirect(request.getContextPath() + nextUrl);
+		Gulprestaurant rest= new Gulprestaurant();
+		rest.setName(name);
+		rest.setAddress(address);			
+		DBGulpRestaurant.update(rest);
+		System.out.println("Insert done");
+		String nextURL="/RestaurantList.jsp";
+		response.sendRedirect(request.getContextPath()+nextURL);
 	}
 
 }

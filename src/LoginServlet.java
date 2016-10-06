@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import customTools.DBGulpRestaurant;
+import customTools.DBGulpRestaurantRating;
+import customTools.DBGulpRestaurantReview;
 import customTools.DBGulpUser;
 import model.Gulprestaurant;
+import model.Gulprestaurantrating;
+import model.Gulprestaurantreview;
 import model.Gulpuser;
 
 /**
@@ -58,10 +62,24 @@ public class LoginServlet extends HttpServlet {
 			int userID = (int) user.getId();
 			session.setAttribute("userID", userID);		
 			long userRole = user.getRole();
+			List<Gulprestaurantreview> reviewList = null;
+			reviewList = DBGulpRestaurantReview.getReviewsForUser(userID);
+			session.setAttribute("reviewList", reviewList);		
+			
+			int size = 30;
+            String gravatarURL = DBGulpUser.getGravatarURL(user.getEmail(), size);
+            session.setAttribute("gravatarURL", gravatarURL);
+			
+			List<Gulprestaurantrating> ratingList = null;
+			ratingList = DBGulpRestaurantRating.getRatingsForUser(userID);
+			session.setAttribute("ratingList", ratingList);		
+			
 			session.setAttribute("userRole", userRole);		
 			
 			if(userRole == 1){
-				nextUrl = "/AddRestaurant.jsp";	
+				restaurantList = DBGulpRestaurant.getRestaurantList();		
+				session.setAttribute("restaurantList", restaurantList);
+				nextUrl = "/AddorUpdate.jsp";	
 			}
 			else{
 				restaurantList = DBGulpRestaurant.getRestaurantList();		

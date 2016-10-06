@@ -124,4 +124,18 @@ public class DBGulpRestaurant {
 			em.close();
 		}
 }
+	public static Gulprestaurant getRestaurantByName(String name) {
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();	
+		TypedQuery<Gulprestaurant> query = em.createQuery("SELECT g FROM Gulprestaurant g where g.name = :name", Gulprestaurant.class);
+		query.setParameter("name", name);
+		Gulprestaurant resto = null;
+		try {
+			resto = query.getSingleResult();		
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return resto;
+}
 }

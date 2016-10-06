@@ -37,7 +37,7 @@
 					<br /> <input type="submit" value="Signup" id="Signup"> <br />
 					<input type="hidden" name="action" value="Signup">
 
-				</form>
+				</form><br/><br/>
 			</div>
 		</center>
 	</div>

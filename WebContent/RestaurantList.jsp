@@ -24,10 +24,9 @@
 			<div>
 				<a href="index.html" class="menu"> <font size="12">Gulp!</font> </a>
 				<ul id="navigation">
-					<li class="selected"><a href="index.html">Home</a></li>
-					<li class="menu"><a href="about.html">Profile</a>
-					</li>
-					<li class="menu"><a href="blog.html">Log Out</a>
+					<li class="selected"><a href="RestaurantList.jsp">Home</a></li>
+					<li class="menu"> <a href="Profile.jsp"><img alt="" src="${gravatarURL}"/>Profile</a></li>
+					<li class="menu"><a href="Login.jsp">Log Out</a>
 					</li>
 				</ul>
 			</div>
@@ -53,7 +52,7 @@
 								<td><c:out value="${restaurantList.name}" /></td>
 								<td><c:out value="${restaurantList.address}" /></td>
 								<td><c:out value="${restaurantList.description}" /></td>
-								<td><c:forEach var="counter" begin="0"
+								<td><c:forEach var="counter" begin="1"
 										end="${restaurantList.averagerating}">
 										<span class="glyphicon glyphicon-star"></span>
 									</c:forEach></td>

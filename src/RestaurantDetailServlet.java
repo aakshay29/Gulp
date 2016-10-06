@@ -6,24 +6,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import customTools.DBGulpRestaurant;
-import customTools.DBGulpUser;
 import model.Gulprestaurant;
-import model.Gulpuser;
 
 /**
- * Servlet implementation class NewuserServlet
+ * Servlet implementation class RestaurantDetailServlet
  */
-@SuppressWarnings("unused")
-@WebServlet("/NewuserServlet")
-public class NewuserServlet extends HttpServlet {
+@WebServlet("/RestaurantDetailServlet")
+public class RestaurantDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NewuserServlet() {
+    public RestaurantDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,28 +39,13 @@ public class NewuserServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String nextUrl="";
-		String newname=request.getParameter("username");
-		String newemail=request.getParameter("email");
-		String newzip=request.getParameter("zipcode");
-		String role ="2";
-		String password = request.getParameter("password");
+		String name=request.getParameter("name");
+		HttpSession session = request.getSession();
+		String nextURL="/DisplayDetail.jsp";
+		Gulprestaurant rest=DBGulpRestaurant.getRestaurantByName(name);
+		session.setAttribute("Restaurant", rest);
 		
-		
-		Gulpuser user = new Gulpuser();
-		user.setName(newname);
-		user.setUsername(newname);
-		user.setEmail(newemail);
-		user.setRole(Long.parseLong(role));
-		user.setPassword(password);
-		user.setZipcode(newzip);
-		
-		DBGulpUser.insert(user);
-		
-		System.out.println("insert done");
-		nextUrl="/Login.jsp";
-		
-		response.sendRedirect(request.getContextPath() + nextUrl);
+		response.sendRedirect(request.getContextPath()+nextURL);
 	}
 
 }
